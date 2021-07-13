@@ -1,9 +1,16 @@
-FROM ubuntu:20.10
+FROM ubuntu:20.04
 WORKDIR /opt
 ENV DEBIAN_FRONTEND=noninteractive
 
+RUN apt-get update && apt-get install -y software-properties-common
+RUN add-apt-repository -y ppa:ubuntu-toolchain-r/ppa && apt update
+RUN apt-get install -y libxpm-dev libgif-dev libjpeg-dev libpng-dev \
+  libtiff-dev libx11-dev libncurses5-dev automake autoconf texinfo \
+  libgtk2.0-dev gcc-10 g++-10 libgccjit0 libgccjit-10-dev libjansson4 \
+  libjansson-dev
+
 RUN sed -i 's/# deb-src/deb-src/' /etc/apt/sources.list &&\
-    apt-get update && apt-get install --yes --no-install-recommends  \
+    apt-get install --yes --no-install-recommends  \
     apt-transport-https\
     ca-certificates\
     build-essential \
@@ -29,6 +36,7 @@ RUN sed -i 's/# deb-src/deb-src/' /etc/apt/sources.list &&\
     libjbig-dev \
     libncurses-dev\
     liblcms2-dev\
+    libwebkit2gtk-4.0-dev \
     texinfo
 
 
@@ -37,8 +45,12 @@ RUN update-ca-certificates \
     && git clone --depth 1 https://git.savannah.gnu.org/git/emacs.git -b feature/pgtk emacs \
     && mv emacs/* .
 
+RUN sed -i "/(defmacro define-obsolete-function-alias/c\(defmacro define-obsolete-function-alias ( obsolete-name current-name" ./lisp/emacs-lisp/byte-run.el
+RUN sed -i "/                                           &optional docstring)/c\                                           &optional when docstring)" ./lisp/emacs-lisp/byte-run.el
+
 # Build
 ENV CC="gcc-10"
+ENV CXX="gcc-10"
 RUN ./autogen.sh && ./configure \
     --prefix "/usr/local" \
     --with-native-compilation \
@@ -46,11 +58,17 @@ RUN ./autogen.sh && ./configure \
     --with-json \
     --with-gnutls  \
     --with-rsvg  \
-    --without-xwidgets \
     --without-toolkit-scroll-bars \
     --without-xaw3d \
+    --enable-link-time-optimization \
+    --without-sound \
+    --without-gconf \
+    --without-gsettings \
+    --with-xwidgets \
+    --with-x-toolkit=gtk3 \
+    --with-cairo \
     --with-mailutils \
-    CFLAGS="-O2 -pipe"
+    CFLAGS="-O3 -mtune=native -march=native -fomit-frame-pointer"
 
 RUN make NATIVE_FULL_AOT=1 -j $(nproc)
 

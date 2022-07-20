@@ -68,7 +68,7 @@ RUN ./autogen.sh && ./configure \
 RUN make NATIVE_FULL_AOT=1 -j $(nproc)
 
 # Create package
-RUN EMACS_VERSION=$(sed -ne 's/AC_INIT(\[GNU Emacs\], \[\([0-9.]\+\)\], .*/\1/p' configure.ac).$(date +%y.%m.%d.%H) \
+RUN EMACS_VERSION=$(sed -ne 's/AC_INIT(GNU Emacs, \([0-9.]\+\), .*/\1/p' configure.ac) \
     && make install prefix=/opt/emacs-gcc-pgtk_${EMACS_VERSION}/usr/local \
     && mkdir emacs-gcc-pgtk_${EMACS_VERSION}/DEBIAN && echo "Package: emacs-gcc-pgtk\n\
 Version: ${EMACS_VERSION}\n\

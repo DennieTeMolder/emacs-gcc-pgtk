@@ -50,19 +50,19 @@ RUN ./autogen.sh && ./configure \
     --with-modules \
     --with-x-toolkit=gtk3 \
     --with-cairo \
-    --with-xwidgets \
     --with-native-compilation \
     --with-pgtk \
+    --with-json \
+    --with-gnutls  \
+    --with-rsvg  \
+    --with-mailutils \
+    --without-xwidgets \
     --without-compress-install \
     --without-gconf \
     --without-gsettings \
     --without-m17n-flt \
     --enable-autodepend \
     --enable-link-time-optimization \
-    --with-json \
-    --with-gnutls  \
-    --with-rsvg  \
-    --with-mailutils \
     CFLAGS="-O2 -pipe"
 
 RUN make NATIVE_FULL_AOT=1 -j $(nproc)
@@ -83,19 +83,19 @@ Description: Emacs with native compilation and pure GTK\n\
     --with-modules \n\
     --with-x-toolkit=gtk3 \n\
     --with-cairo \n\
-    --with-xwidgets \n\
     --with-native-compilation \n\
     --with-pgtk \n\
+    --with-json \n\
+    --with-gnutls  \n\
+    --with-rsvg  \n\
+    --with-mailutils \n\
+    --without-xwidgets \n\
     --without-compress-install \n\
     --without-gconf \n\
     --without-gsettings \n\
     --without-m17n-flt \n\
     --enable-autodepend \n\
     --enable-link-time-optimization \n\
-    --with-json \n\
-    --with-gnutls  \n\
-    --with-rsvg  \n\
-    --with-mailutils \n\
  CFLAGS='-O2 -pipe'" \
     >> emacs-gcc-pgtk_${EMACS_VERSION}/DEBIAN/control \
     && dpkg-deb --build emacs-gcc-pgtk_${EMACS_VERSION} \

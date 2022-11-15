@@ -8,7 +8,6 @@ RUN sed -i 's/# deb-src/deb-src/' /etc/apt/sources.list &&\
     ca-certificates\
     build-essential \
     autoconf \
-    gcc-10 \
     git \
     pkg-config \
     libgnutls28-dev \
@@ -32,8 +31,8 @@ RUN sed -i 's/# deb-src/deb-src/' /etc/apt/sources.list &&\
     liblcms2-dev\
     libwebp-dev\
     libsqlite3-dev\
-    texinfo
-
+    texinfo \
+    libwebkit2gtk-4.0-dev
 
 # Clone emacs
 RUN update-ca-certificates \
@@ -48,19 +47,18 @@ RUN ./autogen.sh && ./configure \
     --with-gameuser=:games \
     --with-sound=alsa \
     --with-modules \
+    --with-xinput2 \
+    --with-xwidgets \
     --with-x-toolkit=gtk3 \
-    --with-cairo \
-    --with-native-compilation \
+    --with-native-compilation=aot \
     --with-pgtk \
     --with-json \
-    --with-gnutls  \
-    --with-rsvg  \
-    --with-mailutils \
-    --without-xwidgets \
+    --with-cairo \
     --without-compress-install \
     --without-gconf \
-    --without-gsettings \
+    --without-libotf \
     --without-m17n-flt \
+    --without-xaw3d \
     --enable-autodepend \
     --enable-link-time-optimization \
     CFLAGS="-O2 -pipe"
@@ -81,19 +79,18 @@ Description: Emacs with native compilation and pure GTK\n\
     --with-gameuser=:games \n\
     --with-sound=alsa \n\
     --with-modules \n\
+    --with-xinput2 \n\
+    --with-xwidgets \n\
     --with-x-toolkit=gtk3 \n\
-    --with-cairo \n\
-    --with-native-compilation \n\
+    --with-native-compilation=aot \n\
     --with-pgtk \n\
     --with-json \n\
-    --with-gnutls  \n\
-    --with-rsvg  \n\
-    --with-mailutils \n\
-    --without-xwidgets \n\
+    --with-cairo \n\
     --without-compress-install \n\
     --without-gconf \n\
-    --without-gsettings \n\
+    --without-libotf \n\
     --without-m17n-flt \n\
+    --without-xaw3d \n\
     --enable-autodepend \n\
     --enable-link-time-optimization \n\
  CFLAGS='-O2 -pipe'" \

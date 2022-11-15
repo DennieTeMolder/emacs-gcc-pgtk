@@ -11,13 +11,15 @@ This repository shows a Dockerfile to create a emacs deb package with native com
 5. all =.el= files are compiled. ~make NATIVE_FULL_AOT=1~
 6. The emacs is built with sqlite, webp
 ** The package is compiled with flags:
-+ --with-native-compilation
-+ --with-pgtk
-+ --with-mailutils
-+ --without-xwidgets
-+ --with-modules
-+ --with-json
-+ --without-makeinfo
++ --with-native-compilation=aot \
++ --with-pgtk \
++ --with-json \
++ --with-modules \
++ --with-xinput2 \
++ --with-xwidgets \
++ --with-x-toolkit=gtk3 \
++ --with-cairo \
++ --without-libotf \
 + CFLAGS="-O2 -pipe"
 
 * Installation 1: Use [[https://github.com/konstare/emacs-gcc-pgtk/actions][GitHub Actions]]
